@@ -336,9 +336,9 @@ class MeshBlock : public std::enable_shared_from_this<MeshBlock> {
     return block_size.nx(X1DIR) * block_size.nx(X2DIR) * block_size.nx(X3DIR);
   }
 
-  void SetBlockTimestep(const Real dt) { new_block_dt_ = dt; }
-  void SetAllowedDt(const Real dt) { new_block_dt_ = dt; }
-  Real NewDt() const { return new_block_dt_; }
+  void SetBlockTimestep(const TimeReal dt) { new_block_dt_ = dt; }
+  void SetAllowedDt(const TimeReal dt) { new_block_dt_ = dt; }
+  TimeReal NewDt() const { return new_block_dt_; }
 
   // It would be nice for these par_dispatch_ functions to be private, but they can't be
   // 1D default loop pattern

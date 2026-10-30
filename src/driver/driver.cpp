@@ -291,7 +291,7 @@ void EvolutionDriver::SetGlobalTimeStep() {
     // Check if user wants to force the first cycle value
     tm.dt = dt_init;
   } else {
-    if (tm.dt < 0.1 * std::numeric_limits<Real>::max()) {
+    if (tm.dt < 0.1 * std::numeric_limits<TimeReal>::max()) {
       // don't allow dt to grow by more than 2x
       // consider making this configurable in the input
       tm.dt *= dt_factor;
@@ -303,12 +303,12 @@ void EvolutionDriver::SetGlobalTimeStep() {
     // Allow the meshblocks to vote
     for (auto const &pmb : pmesh->block_list) {
       tm.dt = std::min(tm.dt, pmb->NewDt());
-      pmb->SetAllowedDt(std::numeric_limits<Real>::max());
+      pmb->SetAllowedDt(std::numeric_limits<TimeReal>::max());
     }
     // Force timestep to be in the allowable range
     tm.dt = std::max(dt_floor, std::min(tm.dt, dt_ceil));
 #ifdef MPI_PARALLEL
-    PARTHENON_MPI_CHECK(MPI_Allreduce(MPI_IN_PLACE, &tm.dt, 1, MPI_PARTHENON_REAL,
+    PARTHENON_MPI_CHECK(MPI_Allreduce(MPI_IN_PLACE, &tm.dt, 1, MPI_PARTHENON_TIMEREAL,
                                       MPI_MIN, MPI_COMM_WORLD));
 #endif
   }

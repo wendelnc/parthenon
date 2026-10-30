@@ -67,38 +67,38 @@ class EvolutionDriver : public Driver {
  public:
   EvolutionDriver(ParameterInput *pin, ApplicationInput *app_in, Mesh *pm)
       : Driver(pin, app_in, pm) {
-    Real start_time =
+    TimeReal start_time =
         pinput->GetOrAddReal("parthenon/time", "start_time", 0.0,
                              "physical time at which to start the simulation");
-    Real tstop = pinput->GetOrAddReal("parthenon/time", "tlim",
+    TimeReal tstop = pinput->GetOrAddReal("parthenon/time", "tlim",
                                       std::numeric_limits<Real>::infinity(),
                                       "physical time at which to end the simulation");
-    Real dt =
+    TimeReal dt =
         pinput->GetOrAddReal("parthenon/time", "dt", std::numeric_limits<Real>::max(),
                              "initial value of time step before constraining via cfl");
     dt_min =
-        pinput->GetOrAddReal("parthenon/time", "dt_min", std::numeric_limits<Real>::min(),
+        pinput->GetOrAddReal("parthenon/time", "dt_min", std::numeric_limits<TimeReal>::min(),
                              "if timestep falls below this level for dt_min_count_max "
                              "iterations, parthenon throws an error");
     dt_max =
-        pinput->GetOrAddReal("parthenon/time", "dt_max", std::numeric_limits<Real>::max(),
+        pinput->GetOrAddReal("parthenon/time", "dt_max", std::numeric_limits<TimeReal>::max(),
                              "if timestep is above this level for dt_max_count_max "
                              "iterations, parthenon throws an error");
     dt_init = pinput->GetOrAddReal(
-        "parthenon/time", "dt_init", std::numeric_limits<Real>::max(),
+        "parthenon/time", "dt_init", std::numeric_limits<TimeReal>::max(),
         "the first time step will be at least as small as dt_init");
     dt_init_force = pinput->GetOrAddBoolean(
         "parthenon/time", "dt_init_force", false,
         "if set to true, the first time step will be exactly dt_init");
 
     dt_force = pinput->GetOrAddReal("parthenon/time", "dt_force",
-                                    std::numeric_limits<Real>::lowest(),
+                                    std::numeric_limits<TimeReal>::lowest(),
                                     "if set manually enforces this time step exactly");
     dt_floor = pinput->GetOrAddReal("parthenon/time", "dt_floor",
-                                    std::numeric_limits<Real>::min(),
+                                    std::numeric_limits<TimeReal>::min(),
                                     "minimum allowed timestep");
     dt_ceil = pinput->GetOrAddReal("parthenon/time", "dt_ceil",
-                                   std::numeric_limits<Real>::max(),
+                                   std::numeric_limits<TimeReal>::max(),
                                    "maximum allowed timestep");
     dt_min_count_max =
         pinput->GetOrAddInteger("parthenon/time", "dt_min_cycle_limit", 10,
@@ -148,8 +148,8 @@ class EvolutionDriver : public Driver {
 
  protected:
   void PostExecute(DriverStatus status) override;
-  Real dt_force, dt_init, dt_min, dt_max, dt_floor, dt_ceil;
-  Real dt_factor;
+  TimeReal dt_force, dt_init, dt_min, dt_max, dt_floor, dt_ceil;
+  TimeReal dt_factor;
   bool dt_init_force;
   int dt_min_count, dt_max_count;
   int dt_min_count_max, dt_max_count_max;

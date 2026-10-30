@@ -40,6 +40,11 @@ using Real = double;
 #endif
 
 using LocReal = double; // precision for location related variables
+using TimeReal = double; // precision for temporal related variables
+
+#ifdef MPI_PARALLEL
+#define MPI_PARTHENON_TIMEREAL MPI_DOUBLE
+#endif
 
 struct IndexRange {
   int s = 0; /// Starting Index (inclusive)
@@ -329,13 +334,13 @@ inline constexpr bool IsSubmanifold(TopologicalElement containee,
 }
 struct SimTime {
   SimTime() = default;
-  SimTime(const Real tstart, const Real tstop, const int nmax, const int ncurr,
+  SimTime(const TimeReal tstart, const TimeReal tstop, const int nmax, const int ncurr,
           const int nout, const int nout_mesh,
-          const Real dt_in = std::numeric_limits<Real>::max())
+          const TimeReal dt_in = std::numeric_limits<TimeReal>::max())
       : start_time(tstart), time(tstart), tlim(tstop), dt(dt_in), ncycle(ncurr),
         nlim(nmax), ncycle_out(nout), ncycle_out_mesh(nout_mesh) {}
   // beginning time, current time, maximum time, time step
-  Real start_time, time, tlim, dt;
+  TimeReal start_time, time, tlim, dt;
   // current cycle number, maximum number of cycles, cycles between diagnostic output
   int ncycle, nlim, ncycle_out, ncycle_out_mesh;
 

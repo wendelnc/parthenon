@@ -222,7 +222,7 @@ class MeshData {
     pmy_mesh_ = other->GetMeshPointer();
   }
 
-  void SetAllowedDt(const Real dt) const {
+  void SetAllowedDt(const TimeReal dt) const {
     for (const auto &pbd : block_data_) {
       pbd->SetAllowedDt(std::min(dt, pbd->GetBlockPointer()->NewDt()));
     }
